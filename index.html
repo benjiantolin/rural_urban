@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Benji Antolin, Michael Brawner, Blake Buchalter, Kristoffer Stuvstad, with Bo Zhao">
+  <title>What is Rural?</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+  <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.14/c3.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/zaatari.css">
+  <style>
+    .legend {
+      line-height: 16px;
+      width: 140px;
+      color: white;
+      font-family: 'Open Sans', sans-serif;
+      padding: 6px 8px;
+      border-radius: 5px;
+    }
+
+    .legend i {
+      width: 16px;
+      height: 16px;
+      float: left;
+      margin-right: 8px;
+      opacity: 0.9;
+    }
+
+    .legend img {
+      width: 16px;
+      height: 16px;
+      margin-right: 3px;
+      float: left;
+    }
+
+    .legend p {
+      font-size: 12px;
+      line-height: 16px;
+      margin: 0;
+    }
+
+    #mapFunc {
+      font-size: small
+    }
+
+    .fa-mosque:hover {
+      opacity: 0.3;
+    }
+
+    .fa-mosque {
+      color: #8c510a;
+      font-size: .5rem;
+      position: absolute;
+      border: 5px;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      opacity: 0.8;
+      text-shadow: 1px 1px 1px black;
+    }
+
+    .fa-thumbtack {
+      color: red;
+      font-size: 1rem;
+      position: absolute;
+      border: 5px;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      opacity: 0.8;
+      text-shadow: 1px 1px 1px black;
+    }
+
+    .control {
+      color: #8c510a;
+      font-size: 10px;
+      position: relative;
+      border: 5px;
+      top: 35%;
+      left: 5%;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      opacity: 0.8;
+      text-shadow: 1px 1px 1px black;
+    }
+
+    .trash {
+      color: #878787;
+      font-size: 10px;
+      position: relative;
+      border: 5px;
+      top: 35%;
+      left: 5%;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      opacity: 0.8;
+      text-shadow: 1px 1px 1px black;
+    }
+
+    .fa-trash-alt:hover {
+      opacity: 0.3;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    /* The slider */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked+.slider {
+      background-color: #2196F3;
+    }
+
+    input:focus+.slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked+.slider:before {
+      -webkit-transform: translateX(22px);
+      -ms-transform: translateX(22px);
+      transform: translateX(22px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 16px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    /* .fa-trash-alt {
+    color: #878787;
+    font-size: 10px;
+    position: absolute;
+    border: 5px;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    opacity: 0.8;
+    text-shadow: 10px 10px 10px white;
+  } */
+    /* .mosques {
+color: red;
+opacity: 0.8;
+text-shadow: 1px 1px 1px grey;
+} */
+<<<<<<< HEAD
+    .leaflet-control-layers {
+      position: relative;
+      width: 116px;
+
+    }
+=======
+    /* .leaflet-control-layers {
+      position: relative;
+      bottom: 30%;
+      width: 114px;
+    } */
+>>>>>>> 24a5e7984bde548105873243b6f5eea095ef2273
+
+    .c3-chart-arcs-title {
+      fill: white;
+      font-size: 12px;
+    }
+
+    .c3-legend-item {
+      fill: white;
+    }
+
+    .donut {
+      width: 375px;
+      height: 375px;
+      margin: 5px;
+      padding: 2px;
+      border: 2px;
+      fill: white;
+    }
+
+    .shelter {
+      width: 395px;
+      height: 375px;
+      margin: 5px;
+      padding: 2px;
+      border: 2px;
+      fill: white;
+    }
+
+    .agehealth {
+      width: 395px;
+      height: 375px;
+      margin: 5px;
+      padding: 2px;
+      border: 2px;
+      fill: white;
+    }
+
+    .totpop {
+      width: 375px;
+      height: 250px;
+      margin: 5px;
+      padding: 2px;
+      border: 2px;
+      fill: white;
+    }
+
+    .data {
+      z-index: 1000;
+      position: absolute;
+      right: 5px;
+      bottom: 90px;
+      padding: 6px 8px;
+      font: 14px Arial, Helvetica, sans-serif;
+      text-align: right;
+      background: white;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+    }
+
+    #origin {
+      position: fixed;
+      z-index: 1000;
+      top: 60px;
+      left: 420px;
+      width: 200px;
+      height: 200px;
+      color: #333333;
+      padding: 6px 8px;
+      background: #343a40;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+    }
+
+    hr {
+      border-top: 1px solid white;
+      margin-right: 200px;
+      width: 130%;
+    }
+  </style>
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+  <script src="https://unpkg.com/d3@5/dist/d3.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.14/c3.min.js"></script>
+  <!-- <script src="https://d3js.org/d3.v5.min.js"></script> -->
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <!-- <script src="js/leaflet.heat.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/1.3.4/chroma.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140689399-3"></script>
+
+</head>
+
+<body>
+  <header>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+      <div class="container-fluid d-flex justify-content-between">
+        <a href="index.html" class="navbar-brand d-flex align-items-center">
+          <strong>What is Rural?</strong>
+        </a>
+        <ul>
+          <li><a class="nav-link" href="index.html"><i class="fas fa-home"></i></a></li>
+          <li><a class="nav-link" href="map.html"><i class="fas fa-map-marked-alt"></i></a></li>
+          <li><a class="nav-link" href="about.html"><i class="fas fa-info-circle"></i></a></li>
+        </ul>
+      </div>
+
+    </div>
+
+  </header>
+
+  <main>
+
+    <div id="syria">
+      <div id="origin"></div>
+    </div>
+    <div id="info">
+      <h5>Feature Information</h5>
+      <div class='update'>
+        <h1>Hover over a feature</h1>
+      </div>
+    </div>
+    <div id="sidebar">
+      <!-- <div class="sidebar-header">
+
+      </div> -->
+      <div id="projDesc" style="padding: 5px;">What makes an area rural or urban? Many definitions of rural and urban have been
+                                               developed over the years. Definitions use such criteria as overall population, population
+                                               density, commuting patterns, and/or distance from other settlements in determining rural
+                                               and urban areas. Though other definitions for urban and rural exist, the following three
+                                               are the most commonly used.
+      </div>
+      <span><br></span>
+      <hr>
+      <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;US Census Bureau Definition<br><br></strong>
+      <p>The US Census Bureau uses a formula involving population size (2,500 or more) and population density (500 persons per square mile or more) to classify a place as either rural or urban.
+
+The Census Bureau divides the nation into census blocks, the smallest geographic entity for which the census reports population data. These are aggregated into block groups (which generally have between 300 and 3,000 people).
+
+Urban places places are defined starting with a block group that has a population density of 1,000 persons per square mile and adding on block groups and blocks that have a density of 500 persons per square mile.
+If the territory so defined has 2,500 or more people, it is then called an "Urban Area."
+Urban Areas are called Urbanized Areas if they have 50,000 or more people and Urban Clusters if they have between 2,500 and 49,999 people.
+All other areas are rural.</p>
+      <div class="row col-md-12">
+        <div class="col-md-6 align-items-center">
+          <span>Facility Type</span>
+          <label id="luSwitcher" class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="col-md-6 align-items-center">
+          <span>Population</span>
+          <label id="popSwitcher" class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div class="row col-md-12">
+        <div class="col-md-7 legend">
+          <i style="background: #66c2a5; opacity: 0.8"></i>
+          <p>Community Space</p>
+          <i style="background: #b398cf; opacity: 0.8"></i>
+          <p>Infrastructure</p>
+          <i style="background: #ff9c67; opacity: 0.8"></i>
+          <p>Health</p>
+          <i style="background: #fdd250; opacity: 0.8"></i>
+          <p>Education</p>
+          <i style="background: #b3b3b3; opacity: 0.8"></i>
+          <p>Vacant</p>
+        </div>
+        <div class="col-md-5 legend">
+          <i style="background:#ffffcc; opacity: 0.8"></i>
+          <p>
+            <5000</p> <i style="background: #fed976; opacity: 0.8"></i>
+              <p>5001-6000</p>
+              <i style="background:#fd8d3c; opacity: 0.8"></i>
+              <p>6001-7000</p>
+              <i style="background:#e31a1c; opacity: 0.8"></i>
+              <p>7001-8000</p>
+              <i style="background: #800026; opacity: 0.8"></i>
+              <p>>8000</p>
+        </div>
+      </div>
+      <hr>
+      <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;US Office of Management and Budget Definition</strong>
+      <p>The classification most commonly used by government agencies and researchers to identify rural areas is a county-based classification system developed in the late 1940s by the federal agency that became the Office of Management and Budget (OMB).
+
+Counties are classified as Metropolitan if they contain an urbanized area of at least 50,000 people, or are adjacent to such a county and linked to it through significant commuting flows.
+
+All other counties are considered nonmetropolitan. The Core Based Statistical Area system (developed in 2000) classifies nonmetropolitan counties as either "micropolitan" or "noncore."
+
+Counties are classified as Micropolitan if the largest town therein has between 10,000 and 49,999 residents, or are tied to such a county through significant commuting flows.
+All other counties are called Non-Core.
+The OMB cautions that "Metropolitan and Micropolitan Statistical Area Standards do not equate to an urban-rural classification; all counties included in Metropolitan and Micropolitan Statistical Areas... contain both urban and rural territory and populations" (Federal Register Vol. 65, No. 249, p. 82228, December 27, 2000).In spite of this caution, the OMB classification system is the most frequently used system of identifying urban and rural areas for statistical purposes because it is a county-based classification system and most data are collected at the county level. Although it is most common to include both micropolitan and noncore counties in the rural category, some consider only the noncore counties to be "rural."
+
+Applying the Core Based Statistical Area classification to the state of Oregon produces the maps in Figure 2 and 3. Metropolitan counties are shown in blue; nonmetropolitan counties are green and yellow (green are micropolitan and yellow are noncore counties). Here you can see that between 2000 and 2013 some counties have changed classification.</p>
+      <div class="row col-md-12">
+        <div class="col-md-6 align-items-center">
+          <span>Garbage Bins</span>
+          <label id="gbSwitcher" class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="col-md-6 align-items-center">
+          <span>Roads</span>
+          <label id="roadSwitcher" class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div class="row col-md-12">
+        <div class="col-md-7 legend">
+          <span style="font-size: 10pt; color: #006837; stroke: white">
+          <i class="fas fa-trash-alt"></i>
+          </span>
+          <p>Good Condition</p>
+          <span style="font-size: 10pt; color: #ffffbf;">
+          <i class="fas fa-trash-alt"></i>
+          </span>
+          <p>Maintain Condition</p>
+          <span style="font-size: 10pt; color: #a50026;">
+          <i class="fas fa-trash-alt"></i>
+          </span>
+          <p>Replace Condition</p>
+          <span style="font-size: 10pt; color: black;">
+          <i class="fas fa-trash-alt"></i>
+          </span>
+          <p>Unknown Condition</p>
+        </div>
+        <div class="col-md-5 legend">
+          <i style="background:grey"></i>
+          <p>Paved</p>
+          <i style="background: brown"></i>
+          <p>Unpaved</p>
+        </div>
+      </div>
+      <hr>
+      <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rural-Urban Commuting Area Codes<br><br></strong>
+      <p>The Rural-Urban Commuting Area (RUCA) Codes were developed following the 1990 census by researchers at the USDA Economic Research Service in conjunction with demographers at the University of Washington. The geographic basis for the RUCA Codes is census tracts, a geographic area designated by the US Census Bureau. Each tract is designed by the Bureau to contain a population of 3,000 to 8,000 people, who are relatively homogeneous with respect to socio-economic demographics.
+
+The RUCA Codes are defined based primarily on population size and commuting behavior. Census tracts with high proportions of residents who work in the local area are core tracts. Tracts that send significant shares of its residents to the core are commuting tracts.
+
+Core tracts located in areas with a population of at least 50,000, along with their associated commuting tracts, are considered urban/metropolitan.
+Core tracts located in cities with a population of 10,000 to 49,999 are considered micropolitan.
+Core tracts located in towns with 2,500 to 9,999 residents are considered "small towns."
+The remaining tracts are considered rural. In other words, rural areas are those census tracts that do not have significant commuting ties to areas with 2,500 or more people.
+In addition each core has tracts with high commuting into the core (the primary commuting flow there is at least 30%) and low commuting into the core (where the primary flow is 5 - 30%).
+
+Applying this classification to the state of Oregon produces the rural and urban areas seen in Figures 4 and 5, from 2000 and 2010. Here again we see that some census tracts have changed their type over the last decade.</p>
+      <div class="row col-md-12">
+        <div class="col-md-6 align-items-center">
+          <span>Facility Type</span>
+          <label id="luSwitcher" class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="col-md-6 align-items-center">
+          <span>Population</span>
+          <label id="popSwitcher" class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div class="row col-md-12">
+        <div class="col-md-7 legend">
+          <i style="background: #66c2a5; opacity: 0.8"></i>
+          <p>Community Space</p>
+          <i style="background: #b398cf; opacity: 0.8"></i>
+          <p>Infrastructure</p>
+          <i style="background: #ff9c67; opacity: 0.8"></i>
+          <p>Health</p>
+          <i style="background: #fdd250; opacity: 0.8"></i>
+          <p>Education</p>
+          <i style="background: #b3b3b3; opacity: 0.8"></i>
+          <p>Vacant</p>
+        </div>
+        <div class="col-md-5 legend">
+          <i style="background:#ffffcc; opacity: 0.8"></i>
+          <p>
+            <5000</p> <i style="background: #fed976; opacity: 0.8"></i>
+              <p>5001-6000</p>
+              <i style="background:#fd8d3c; opacity: 0.8"></i>
+              <p>6001-7000</p>
+              <i style="background:#e31a1c; opacity: 0.8"></i>
+              <p>7001-8000</p>
+              <i style="background: #800026; opacity: 0.8"></i>
+              <p>>8000</p>
+        </div>
+      </div>
+      <hr>
+      <hr>
+      <hr>
+    </div>
+
+
+
+    <div id="map"></div>
+
+  </main>
+
+  <script>
+    $("#sidebar").mCustomScrollbar({
+      theme: "minimal"
+    });
+    //
+    // $('#dismiss').on('click', function() {
+    //   $('#sidebar').removeClass('active');
+    //   $('#info').css('left', '20px');
+    //   // $('.overlay').removeClass('active');
+    // });
+
+
+    // creating sidebar https://bootstrapious.com/p/bootstrap-sidebar
+    //1. Create a map object.
+    var mymap = L.map('map', {
+      center: [44, -122.5],
+      zoom: 8,
+      maxZoom: 17,
+      minZoom: 3,
+      zoomControl: false,
+      detectRetina: true
+    });
+    var syriamap = L.map('origin', {
+      center: [44, -120.5],
+      zoom: 5,
+      maxZoom: 5,
+      minZoom: 5,
+      zoomcontrol: false,
+      detectRetina: true,
+      dragging: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+    });
+
+    $(".leaflet-control-zoom").hide();
+
+    L.control.scale({
+      // bottom: 50  ;
+      position: 'topright'
+    }).addTo(mymap);
+
+    var Stamen_Terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', {
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 18,
+      ext: 'png'
+    }).addTo(syriamap);
+
+
+    var gray = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png');
+    var streets = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(mymap);
+    var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+    var baseLayers = {
+      'Grayscale': gray,
+      'Streets': streets,
+      'Satellite': satellite
+    }
+
+
+    var districts_group = L.layerGroup().addTo(mymap);
+    var roads_group = L.layerGroup();
+    var trash_group = L.layerGroup();
+    var facilities_group = L.layerGroup().addTo(mymap);
+    var facilityColors = chroma.scale('Set2').mode('lch').colors(5);
+
+      L.control.layers(baseLayers, {
+        collapsed: false
+      }).addTo(mymap);
+
+
+
+
+
+    $(".leaflet-control-attribution").hide()
+
+    $(".leaflet-control-attribution")
+      .css("bottom", "60px")
+      .css("background-color", "transparent")
+      .html("Supported by <a href='http://geoviz.ceoas.oregonstate.edu'> GeoViz Lab @ Oregon State University </a>");
+
+    $(document).on("click", '[data-toggle="lightbox"]', function(event) {
+      event.preventDefault();
+      $(this).ekkoLightbox();
+    });
+
+
+
+    $("#luSwitcher input").on("click", function() {
+      if ($("#luSwitcher input:checked").val() === "on") {
+        facilities_group.addTo(mymap);
+      } else {
+        mymap.removeLayer(facilities_group);
+      }
+    })
+
+    $("#popSwitcher input").on("click", function() {
+      if ($("#popSwitcher input:checked").val() === "on") {
+        districts_group.addTo(mymap);
+      } else {
+        mymap.removeLayer(districts_group);
+      }
+    })
+
+    $("#gbSwitcher input").on("click", function() {
+      if ($("#gbSwitcher input:checked").val() === "on") {
+        trash_group.addTo(mymap);
+      } else {
+        mymap.removeLayer(trash_group);
+      }
+    })
+
+    $("#roadSwitcher input").on("click", function() {
+      if ($("#roadSwitcher input:checked").val() === "on") {
+        roads_group.addTo(mymap);
+      } else {
+        mymap.removeLayer(roads_group);
+      }
+    })
+
+    $("#luSwitcher").click();
+    $("#popSwitcher").click();
+
+
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140689399-3');
+  </script>
+</body>
+
+</html>
